@@ -10,7 +10,6 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post("/api/send-email", async (req, res) => {
-
   const { fullName, companyName, title, email, contactNumber } = req.body;
 
   // Create a transporter for Nodemailer (make sure to configure with your SMTP provider)
@@ -28,15 +27,25 @@ app.post("/api/send-email", async (req, res) => {
     from: process.env.EMAIL_USER,
     to: `ben@wearevenu.com , oscar@wearevenu.com`, // Send to the user's email
     subject: "New signup!",
-    text: `
+    text: fullName
+      ? `
             Thank you for signing up for our Pre-Launch Beta!
 
-            Here are your details:
+            Here are the details:
             - Full Name: ${fullName}
             - Company Name: ${companyName}
             - Title: ${title}
             - Email: ${email}
             - Contact Number: ${contactNumber || "Not provided"}
+
+            One more user signup for the venu beta!
+        `
+      : `
+            Thank you for signing up for our Pre-Launch Beta!
+
+            Here are the details:
+
+            - Email: ${email}
 
             One more user signup for the venu beta!
         `,
